@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/movieListFragment">
+
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="com.example.romero.movielibrary_romero.ui.list.MovieListFragment"
+        android:label="Mi Catálogo"
+        tools:layout="@layout/fragment_movie_list">
+
+        <action
+            android:id="@+id/action_list_to_detail"
+            app:destination="@id/movieDetailFragment" />
+
+        <action
+            android:id="@+id/action_list_to_edit"
+            app:destination="@id/movieEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.example.romero.movielibrary_romero.ui.detail.MovieDetailFragment"
+        android:label="Detalle"
+        tools:layout="@layout/fragment_movie_detail">
+
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_detail_to_edit"
+            app:destination="@id/movieEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieEditFragment"
+        android:name="com.example.romero.movielibrary_romero.ui.edit.MovieEditFragment"
+        android:label="Editar película"
+        tools:layout="@layout/fragment_movie_edit">
+
+        <!-- -1 significa "modo crear" (ningún ID válido) -->
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 
 </navigation>
