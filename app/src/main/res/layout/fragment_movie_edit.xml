@@ -9,10 +9,12 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Título -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Título">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTitle"
                 android:layout_width="match_parent"
@@ -20,11 +22,13 @@
                 android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Año -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Año">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etYear"
                 android:layout_width="match_parent"
@@ -32,11 +36,13 @@
                 android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Género -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Género">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etGenre"
                 android:layout_width="match_parent"
@@ -44,11 +50,13 @@
                 android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Rating -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Rating (1-10)">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRating"
                 android:layout_width="match_parent"
@@ -56,6 +64,22 @@
                 android:inputType="numberDecimal"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- 🔥 DESCRIPCIÓN (NUEVO) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Descripción">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:minLines="2"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Switch -->
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchWatchedEdit"
             android:layout_width="wrap_content"
@@ -63,7 +87,9 @@
             android:layout_marginTop="12dp"
             android:text="Ya la vi"/>
 
-        <Button android:id="@+id/btnSave"
+        <!-- Botón -->
+        <Button
+            android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

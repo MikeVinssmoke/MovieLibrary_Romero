@@ -7,5 +7,7 @@ data class Movie(
     val year: Int,
     val genre: String,
     val rating: Float,
-    val watched: Boolean = false
+    val watched: Boolean = false,
+    val description: String
+
 )

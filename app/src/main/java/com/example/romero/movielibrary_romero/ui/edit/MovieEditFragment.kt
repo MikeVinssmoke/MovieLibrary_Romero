@@ -27,6 +27,7 @@ class MovieEditFragment : Fragment(R.layout.fragment_movie_edit) {
 
         val isEditMode = args.movieId != -1
 
+        // Cargar película si es edición
         if (isEditMode) {
             viewModel.loadMovie(args.movieId)
         }
@@ -41,6 +42,7 @@ class MovieEditFragment : Fragment(R.layout.fragment_movie_edit) {
             binding.etGenre.setText(movie.genre)
             binding.etRating.setText(movie.rating.toString())
             binding.switchWatchedEdit.isChecked = movie.watched
+            binding.etDescription.setText(movie.description) // 🔥 NUEVO
         }
 
         binding.btnSave.setOnClickListener {
@@ -49,6 +51,7 @@ class MovieEditFragment : Fragment(R.layout.fragment_movie_edit) {
             val genre = binding.etGenre.text.toString().trim()
             val rating = binding.etRating.text.toString().toFloatOrNull() ?: 0f
             val watched = binding.switchWatchedEdit.isChecked
+            val description = binding.etDescription.text.toString().trim() // 🔥 NUEVO
 
             if (title.isEmpty()) {
                 binding.etTitle.error = "El título es obligatorio"
@@ -62,7 +65,8 @@ class MovieEditFragment : Fragment(R.layout.fragment_movie_edit) {
                         year = year,
                         genre = genre,
                         rating = rating,
-                        watched = watched
+                        watched = watched,
+                        description = description // 🔥 NUEVO
                     )
                 )
             } else {
@@ -72,7 +76,8 @@ class MovieEditFragment : Fragment(R.layout.fragment_movie_edit) {
                         year = year,
                         genre = genre,
                         rating = rating,
-                        watched = watched
+                        watched = watched,
+                        description = description // 🔥 NUEVO
                     )
                 )
             }

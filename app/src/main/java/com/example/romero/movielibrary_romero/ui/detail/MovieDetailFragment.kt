@@ -25,30 +25,6 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
         // Cargar película
         viewModel.loadMovie(args.movieId)
 
-        // LISTENERS (solo una vez)
-        binding.switchWatched.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.selectedMovie.value?.let { movie ->
-                if (movie.watched != isChecked) {
-                    viewModel.toggleWatched(movie)
-                }
-            }
-        }
-
-        binding.btnEdit.setOnClickListener {
-            viewModel.selectedMovie.value?.let { movie ->
-                val action = MovieDetailFragmentDirections
-                    .actionDetailToEdit(movieId = movie.id)
-                findNavController().navigate(action)
-            }
-        }
-
-        binding.btnDelete.setOnClickListener {
-            viewModel.selectedMovie.value?.let { movie ->
-                viewModel.delete(movie)
-                findNavController().popBackStack()
-            }
-        }
-
         // OBSERVE (solo UI)
         viewModel.selectedMovie.observe(viewLifecycleOwner) { movie ->
             movie ?: return@observe
@@ -58,13 +34,34 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
             binding.tvDetailGenre.text = "Género: ${movie.genre}"
             binding.tvDetailRating.text = "Rating: ${movie.rating}/10"
 
-            // Evitar que el listener se dispare solo
+            // ✅ ESTA ES LA LÍNEA QUE TE FALTABA
+            binding.tvDetailDescription.text = movie.description
+
+            // Switch sin duplicar listener
             binding.switchWatched.setOnCheckedChangeListener(null)
             binding.switchWatched.isChecked = movie.watched
+
             binding.switchWatched.setOnCheckedChangeListener { _, isChecked ->
                 if (movie.watched != isChecked) {
                     viewModel.toggleWatched(movie)
                 }
+            }
+        }
+
+        // EDITAR
+        binding.btnEdit.setOnClickListener {
+            viewModel.selectedMovie.value?.let { movie ->
+                val action = MovieDetailFragmentDirections
+                    .actionDetailToEdit(movieId = movie.id)
+                findNavController().navigate(action)
+            }
+        }
+
+        // ELIMINAR
+        binding.btnDelete.setOnClickListener {
+            viewModel.selectedMovie.value?.let { movie ->
+                viewModel.delete(movie)
+                findNavController().popBackStack()
             }
         }
     }
