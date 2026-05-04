@@ -15,8 +15,11 @@ class MovieEditFragment : Fragment(R.layout.fragment_movie_edit) {
 
     private var _binding: FragmentMovieEditBinding? = null
     private val binding get() = _binding!!
+
     private val viewModel: MovieViewModel by activityViewModels()
     private val args: MovieEditFragmentArgs by navArgs()
+
+    private var currentMovie: Movie? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,14 +29,18 @@ class MovieEditFragment : Fragment(R.layout.fragment_movie_edit) {
 
         if (isEditMode) {
             viewModel.loadMovie(args.movieId)
-            viewModel.selectedMovie.observe(viewLifecycleOwner) { movie ->
-                movie ?: return@observe
-                binding.etTitle.setText(movie.title)
-                binding.etYear.setText(movie.year.toString())
-                binding.etGenre.setText(movie.genre)
-                binding.etRating.setText(movie.rating.toString())
-                binding.switchWatchedEdit.isChecked = movie.watched
-            }
+        }
+
+        // OBSERVER (uno solo)
+        viewModel.selectedMovie.observe(viewLifecycleOwner) { movie ->
+            movie ?: return@observe
+            currentMovie = movie
+
+            binding.etTitle.setText(movie.title)
+            binding.etYear.setText(movie.year.toString())
+            binding.etGenre.setText(movie.genre)
+            binding.etRating.setText(movie.rating.toString())
+            binding.switchWatchedEdit.isChecked = movie.watched
         }
 
         binding.btnSave.setOnClickListener {
@@ -48,11 +55,26 @@ class MovieEditFragment : Fragment(R.layout.fragment_movie_edit) {
                 return@setOnClickListener
             }
 
-            if (isEditMode) {
-                viewModel.update(Movie(args.movieId, title, year, genre, rating, watched))
+            if (isEditMode && currentMovie != null) {
+                viewModel.update(
+                    currentMovie!!.copy(
+                        title = title,
+                        year = year,
+                        genre = genre,
+                        rating = rating,
+                        watched = watched
+                    )
+                )
             } else {
-                viewModel.insert(Movie(title = title, year = year, genre = genre,
-                    rating = rating, watched = watched))
+                viewModel.insert(
+                    Movie(
+                        title = title,
+                        year = year,
+                        genre = genre,
+                        rating = rating,
+                        watched = watched
+                    )
+                )
             }
 
             findNavController().popBackStack()

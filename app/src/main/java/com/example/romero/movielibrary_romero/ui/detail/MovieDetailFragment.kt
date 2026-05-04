@@ -14,6 +14,7 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
 
     private var _binding: FragmentMovieDetailBinding? = null
     private val binding get() = _binding!!
+
     private val viewModel: MovieViewModel by activityViewModels()
     private val args: MovieDetailFragmentArgs by navArgs()
 
@@ -21,29 +22,49 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMovieDetailBinding.bind(view)
 
+        // Cargar película
         viewModel.loadMovie(args.movieId)
 
-        viewModel.selectedMovie.observe(viewLifecycleOwner) { movie ->
-            movie ?: return@observe
-            binding.tvDetailTitle.text = movie.title
-            binding.tvDetailYear.text = "Año: ${movie.year}"
-            binding.tvDetailGenre.text = "Género: ${movie.genre}"
-            binding.tvDetailRating.text = "Rating: ${movie.rating}/10"
-            binding.switchWatched.isChecked = movie.watched
-
-            binding.switchWatched.setOnCheckedChangeListener { _, _ ->
-                viewModel.toggleWatched(movie)
+        // LISTENERS (solo una vez)
+        binding.switchWatched.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.selectedMovie.value?.let { movie ->
+                if (movie.watched != isChecked) {
+                    viewModel.toggleWatched(movie)
+                }
             }
+        }
 
-            binding.btnEdit.setOnClickListener {
+        binding.btnEdit.setOnClickListener {
+            viewModel.selectedMovie.value?.let { movie ->
                 val action = MovieDetailFragmentDirections
                     .actionDetailToEdit(movieId = movie.id)
                 findNavController().navigate(action)
             }
+        }
 
-            binding.btnDelete.setOnClickListener {
+        binding.btnDelete.setOnClickListener {
+            viewModel.selectedMovie.value?.let { movie ->
                 viewModel.delete(movie)
                 findNavController().popBackStack()
+            }
+        }
+
+        // OBSERVE (solo UI)
+        viewModel.selectedMovie.observe(viewLifecycleOwner) { movie ->
+            movie ?: return@observe
+
+            binding.tvDetailTitle.text = movie.title
+            binding.tvDetailYear.text = "Año: ${movie.year}"
+            binding.tvDetailGenre.text = "Género: ${movie.genre}"
+            binding.tvDetailRating.text = "Rating: ${movie.rating}/10"
+
+            // Evitar que el listener se dispare solo
+            binding.switchWatched.setOnCheckedChangeListener(null)
+            binding.switchWatched.isChecked = movie.watched
+            binding.switchWatched.setOnCheckedChangeListener { _, isChecked ->
+                if (movie.watched != isChecked) {
+                    viewModel.toggleWatched(movie)
+                }
             }
         }
     }
