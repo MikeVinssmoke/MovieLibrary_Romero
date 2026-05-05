@@ -4,8 +4,13 @@
 Arquitectura MVVM con Navigation Component, Safe Args, LiveData y Room
 ## Integrantes
 
-- [Nombre 1]
-- [Nombre 2]
+- Michael Alberto Romero Gonzalez - 100487913
+- Sergio Rodríguez - 1098820679
+- Anderson Sanguino Suarez - 1005538900
+- Marlon Andres Ramirez Chirivi - 1095950857
+
+
+- Fecha: 20/03/2026
 
 ---
 
